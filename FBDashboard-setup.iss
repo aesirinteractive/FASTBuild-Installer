@@ -30,7 +30,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=admin
 ;PrivilegesRequiredOverridesAllowed=dialog
-OutputDir={#ProjectPath}\FASTBuild Installer
+OutputDir={#ProjectPath}\FASTBuild-Installer
 OutputBaseFilename=FBDashboard-setup
 SetupIconFile={#ProjectPath}\FASTBuild-Dashboard\Source\Resources\Icons\app.ico
 Compression=lzma
