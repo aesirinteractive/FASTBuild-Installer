@@ -170,3 +170,7 @@ Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType
 Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "FASTBUILD_BROKERAGE_PATH"; ValueData: {code:GetBrokerPath}; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue
 Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "FASTBUILD_CACHE_PATH"; ValueData: {code:GetCachePath}; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue      
 
+[UninstallDelete]
+Type: files; Name: "{app}\FBuild\FBuildWorker.exe.settings"
+Type: files; Name: "{app}\FBuild\FBuildWorker.exe.copy"
+Type: files; Name: "{app}\FBuild\FBuildWorker.exe.copy.settings"
