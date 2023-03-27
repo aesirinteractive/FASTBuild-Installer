@@ -4,15 +4,18 @@
 ; BEGIN: TODO: CHANGE THE FOLLOWING PATHS IN ANGLED BRACKETS (<INSERT_...>) BEFORE BUILDING THE INSTALLER !! 
 #define ProjectPath "<INSERT_LOCAL_INSTALLER_REPOSITORY_PATH>"
 #define LocalFBDashboardPath "<INSERT_LOCAL_FBDASHBOARD_REPOSITORY_PATH>"
-#define LocalFBWorkerExecutable "<INSERT_FBWORKER_PATH_TO_EXE>"
+#define LocalFBExecutable "<INSERT_PATH_TO_FBuild.exe>"
+#define LocalFBWorkerExecutable "<INSERT_PATH_TO_FBuildWorker.exe>"
 #define LocalUEPrerequisitesExecutable "<INSERT_PATH_TO_UEPrereqSetup_x64.exe>"
+
 #define FBBrokerPath "<INSERT_FB_NETWORK_PATH>\FastBuild"
 #define FBCachePath "<INSERT_FB_NETWORK_PATH>\FastBuild\cache"
+
 #define MyAppId "{<INSERT_UUID>}" 
 ; END
 
 #define MyAppName "FASTBuild Dashboard"
-#define MyAppVersion "0.94.2.001-1.09.001"
+#define MyAppVersion "0.94.2.001-1.09.002"
 #define MyAppPublisher "Aesir Interactive GmbH"
 #define MyAppURL "https://aesir-interactive.com"
 #define MyAppExeName "FBDashboard.exe"    
@@ -41,6 +44,7 @@ SolidCompression=yes
 WizardStyle=modern
 ; Tell Windows Explorer to reload the environment
 ChangesEnvironment=yes
+AlwaysRestart=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -54,6 +58,7 @@ Name: "{app}\FBuild"; Permissions: users-modify
 
 [Files]
 Source: "{#LocalFBDashboardPath}\Source\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#LocalFBExecutable}"; DestDir: "{app}\FBuild"; Flags: ignoreversion    
 Source: "{#LocalFBWorkerExecutable}"; DestDir: "{app}\FBuild"; Flags: ignoreversion    
 Source: "{#LocalUEPrerequisitesExecutable}"; DestDir: "{tmp}"; Flags: deleteafterinstall; AfterInstall: InstallUEPrereq
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -168,8 +173,14 @@ begin
   Result := FBConfigDirPage.Values[1];
 end;
 
+function UninstallNeedRestart(): Boolean;
+begin
+  Result := True;
+end;
+
 [Registry]                
 Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "FBDashboard"; ValueData: """{app}\{#MyAppExeName}"" -minimized"; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue
+Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "FASTBUILD_EXECUTABLE_PATH"; ValueData: "{app}\FBuild\FBuild.exe"; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue
 Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "FASTBUILD_BROKERAGE_PATH"; ValueData: {code:GetBrokerPath}; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue
 Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "FASTBUILD_CACHE_PATH"; ValueData: {code:GetCachePath}; Flags: createvalueifdoesntexist uninsdeletekeyifempty uninsdeletevalue      
 
